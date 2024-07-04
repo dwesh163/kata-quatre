@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -51,13 +52,13 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for !correctInput {
-		fmt.Print("Enter a number between 0 and 9999: ")
+		fmt.Print("Enter a number between -9999 and 9999: ")
 
 		if scanner.Scan() {
 			input := scanner.Text()
 			if num, err := strconv.Atoi(strings.TrimSpace(input)); err != nil {
 				fmt.Println("Please enter a valid number")
-			} else if num < 0 || num > 9999 {
+			} else if num < -9999 || num > 9999 {
 				fmt.Println("You entered a number out of range")
 			} else {
 				i = num
@@ -69,9 +70,17 @@ func main() {
 		}
 	}
 
+	println(i)
+
 	for i != 4 {
-		var convertedNumber = convertNumber(i)
-		var length = len(convertedNumber)
+		var convertedNumber string
+		if i < 0 {
+			i = int(math.Abs(float64(i)))
+			convertedNumber = "moins-" + convertNumber(i)
+		} else {
+			convertedNumber = convertNumber(i)
+		}
+		var length int = len(convertedNumber)
 		println(convertedNumber, "est", convertNumber(length))
 		i = length
 	}
